@@ -1,0 +1,49 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jlarue <jlarue@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/08/29 11:23:08 by jlarue            #+#    #+#              #
+#    Updated: 2023/08/29 11:27:04 by jlarue           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME	= replace
+
+CC		= c++
+FLAGS	= -Wall -Wextra -Werror -std=c++98 -pedantic
+RM		= rm -rf
+
+SRCS = main.cpp
+
+OBJS = ${SRCS:%.cpp=%.o}
+DEPS = ${SRCS:%.cpp=%.d}
+
+GREEN		=	\e[92;5;118m
+
+.PHONY: all clean re
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	@printf "Compiling\n"
+	@ $(CC) $(FLAGS) ${OBJS} -o $(NAME)
+	@printf "$(GREEN) - Executable ready.\n"
+
+%.o: %.cpp
+	${CC} ${FLAGS} -c $< -o $@
+
+clean:
+	@$(RM) ${OBJS} ${DEPS}
+	@printf "$(GREEN) objet et deps removed.\n"
+
+fclean: clean
+	@$(RM) $(NAME)
+	@printf "$(GREEN) objet deps et exec removed.\n"
+
+re: fclean
+	make -C .
+
+-include ${DEPS}
